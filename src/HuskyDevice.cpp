@@ -1,9 +1,9 @@
-#include "HuskDevice.h"
+#include "HuskyDevice.h"
 #include "Sensor.h"
 #include "SensorFactory.h"
 #include "patch.h"
 #include "ReceptorIV.h"
-void HuskDevice::LigarLed()
+void HuskyDevice::LigarLed()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -19,7 +19,7 @@ void HuskDevice::LigarLed()
 	
 }
 
-void HuskDevice::DesligarLed()
+void HuskyDevice::DesligarLed()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -35,7 +35,7 @@ void HuskDevice::DesligarLed()
 	
 }
 
-void HuskDevice::LigarSonoff()
+void HuskyDevice::LigarSonoff()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -45,7 +45,7 @@ void HuskDevice::LigarSonoff()
 	
 }
 
-void HuskDevice::DesligarSonoff()
+void HuskyDevice::DesligarSonoff()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -55,7 +55,7 @@ void HuskDevice::DesligarSonoff()
 	
 }
 
-void HuskDevice::InscreverTodosTopicos()
+void HuskyDevice::InscreverTodosTopicos()
 {
 	int total = topicos.size();
 	for (int i = 0; i < total; i++)
@@ -65,13 +65,13 @@ void HuskDevice::InscreverTodosTopicos()
 	MQTT.subscribe(this->ID_CLIENTE.c_str());
 }
 
-void HuskDevice::AdicionarTopico(std::string topico)
+void HuskyDevice::AdicionarTopico(std::string topico)
 {
 	int total = topicos.size();
 	if (total <= 5)
 	{
 
-		//Primeiro verifica se o tópico já está no vetor
+		//Primeiro verifica se o tï¿½pico jï¿½ estï¿½ no vetor
 		
 		for (int i = 0; i < total; i++)
 		{		
@@ -86,7 +86,7 @@ void HuskDevice::AdicionarTopico(std::string topico)
 	}
 }
 
-void HuskDevice::ImprimirTopicos() const
+void HuskyDevice::ImprimirTopicos() const
 {
 	/*for (Topico *aux = raizTopicos; aux != NULL; aux = aux->proximo)
 	{
@@ -95,7 +95,7 @@ void HuskDevice::ImprimirTopicos() const
 	Serial.printf("-------------------\n");*/
 }
 
-void HuskDevice::RemoverTopico(std::string topico)
+void HuskyDevice::RemoverTopico(std::string topico)
 {
 	int total = topicos.size();
 	for (int i = 0; i < total; i++)
@@ -109,7 +109,7 @@ void HuskDevice::RemoverTopico(std::string topico)
 
 }
 
-void HuskDevice::EnviarMensagemLigado()
+void HuskyDevice::EnviarMensagemLigado()
 {
 	std::string topico;
 	char mensagem[2];
@@ -123,7 +123,7 @@ void HuskDevice::EnviarMensagemLigado()
 }
 
 
-void HuskDevice::EnviarMensagemStatus()
+void HuskyDevice::EnviarMensagemStatus()
 {
 	std::string topico;
 	std::string mensagem;
@@ -135,7 +135,7 @@ void HuskDevice::EnviarMensagemStatus()
 	MQTT.publish(topico.c_str(), mensagem.c_str());
 }
 
-void HuskDevice::EnviarMensagemTipo()
+void HuskyDevice::EnviarMensagemTipo()
 {
 	std::string topico;
 	std::string mensagem;
@@ -151,7 +151,7 @@ void HuskDevice::EnviarMensagemTipo()
 }
 
 
-void HuskDevice::ReconnectMQTT()
+void HuskyDevice::ReconnectMQTT()
 {
 	
 	if (MQTT.connect(this->ID_CLIENTE.c_str(), this->MQTT_USER.c_str(), this->MQTT_PASSWORD.c_str()))
@@ -164,13 +164,13 @@ void HuskDevice::ReconnectMQTT()
 	}
 }
 
-void HuskDevice::ReconnectWiFi() {
+void HuskyDevice::ReconnectWiFi() {
 	while (!WiFi.isConnected()) {
 
 	}
 }
 
-void HuskDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
+void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 {
 	std::string comando;
 	std::string chave;
@@ -195,7 +195,7 @@ void HuskDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 	{
 		std::vector<std::string> topicos = patch::split(chave, '\r');
 
-		for (std::vector<std::string>::iterator it = topicos.begin(); it != topicos.end(); ++it)
+		for (auto it = topicos.begin(); it != topicos.end(); ++it)
 		{
 			AdicionarTopico(*it);
 		}
@@ -223,7 +223,7 @@ void HuskDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 	}
 	else
 	{
-		for (int y = 0; y < 5; y++) //Indicação que deu algo de errado
+		for (int y = 0; y < 5; y++) //Indicaï¿½ï¿½o que deu algo de errado
 		{
 			LigarLed();
 			delay(500);
@@ -236,13 +236,13 @@ void HuskDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 }
 
 
-void HuskDevice::CriarID()
+void HuskyDevice::CriarID()
 {
 	String idstr = WiFi.macAddress();
 	this->ID_CLIENTE = std::string(idstr.c_str());
 }
 
-HuskDevice::HuskDevice(husky::TipoUpload stipo)
+HuskyDevice::HuskyDevice(husky::TipoUpload stipo)
 {
 	switch (stipo)
 	{
@@ -263,7 +263,7 @@ HuskDevice::HuskDevice(husky::TipoUpload stipo)
 			break;
 		default:
 		{
-			Serial.printf("Tipo inválido\n");
+			Serial.printf("Tipo invï¿½lido\n");
 			return;
 		}
 	}
@@ -271,7 +271,7 @@ HuskDevice::HuskDevice(husky::TipoUpload stipo)
 	Iniciar();
 }
 
-void HuskDevice::Iniciar()
+void HuskyDevice::Iniciar()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -309,20 +309,7 @@ void HuskDevice::Iniciar()
 
 }
 
-class Vetor2 {
-	private :
-		int x;
-		int y;
-
-public: 
-	Vetor2 operator + (Vetor2& outro)
-	{
-		
-	}
-};
-
-
-void HuskDevice::VerificarBtn()
+void HuskyDevice::VerificarBtn()
 {
 	int btn_estado_atual = digitalRead(BTN_PIN);
 
@@ -346,7 +333,7 @@ void HuskDevice::VerificarBtn()
 }
 
 
-void HuskDevice::Conectar(const std::string ssid, const std::string senha, const std::string servidor, int porta, const std::string usuariomqtt, const std::string senhamqtt)
+void HuskyDevice::Conectar(const std::string ssid, const std::string senha, const std::string servidor, int porta, const std::string usuariomqtt, const std::string senhamqtt)
 {
 	WiFi.begin(ssid.c_str(), senha.c_str());
 
@@ -355,7 +342,7 @@ void HuskDevice::Conectar(const std::string ssid, const std::string senha, const
 	int intervaloLed = 150;
 	while(!WiFi.isConnected())
 	{
-		if (tipo != husky::NODE_MCU) //Se não é node_mcu
+		if (tipo != husky::NODE_MCU) //Se nï¿½o ï¿½ node_mcu
 		{
 			VerificarBtn();
 			if ((millis() - ultimo) > intervaloLed)
@@ -383,11 +370,11 @@ void HuskDevice::Conectar(const std::string ssid, const std::string senha, const
 	this->MQTT_PASSWORD.assign(senhamqtt);
 
 	// DesligarLed();
-	MQTT.setServer(servidor.c_str(), porta); //Endereço de ip e porta do broker MQTT
-	MQTT.setCallback(std::bind(&HuskDevice::mqtt_callback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	MQTT.setServer(servidor.c_str(), porta); //Endereï¿½o de ip e porta do broker MQTT
+	MQTT.setCallback(std::bind(&HuskyDevice::mqtt_callback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
-void HuskDevice::Loop()
+void HuskyDevice::Loop()
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -399,7 +386,7 @@ void HuskDevice::Loop()
 	}
 	else
 	{
-		for (std::vector<std::unique_ptr<husky::Sensor>>::iterator itSensor = this->sensores.begin(); itSensor != this->sensores.end(); itSensor++)
+		for (auto itSensor = this->sensores.begin(); itSensor != this->sensores.end(); itSensor++)
 		{
 			husky::Sensor* p = itSensor->get();
 			if ((millis() - p->ultimoIntervalo) > p->intervalo)
@@ -409,7 +396,7 @@ void HuskDevice::Loop()
 				std::vector<husky::MensagemMqtt> mensagens = p->executar();
 				std::string topicoBase(this->ID_CLIENTE);
 
-				for (std::vector<husky::MensagemMqtt>::iterator itMensagem = mensagens.begin(); itMensagem != mensagens.end(); ++itMensagem)
+				for (auto itMensagem = mensagens.begin(); itMensagem != mensagens.end(); ++itMensagem)
 				{
 					std::string topico = topicoBase + "/" + itMensagem->topico;
 					MQTT.publish(topico.c_str(), itMensagem->payload.c_str());
@@ -421,12 +408,12 @@ void HuskDevice::Loop()
 	this->receptorIV.get()->lerReceptor();
 }
 
-void HuskDevice::AdicionarSensor(std::unique_ptr<husky::Sensor> s)
+void HuskyDevice::AdicionarSensor(std::unique_ptr<husky::Sensor> s)
 {
 	sensores.push_back(std::move(s));
 }
 
-void HuskDevice::RemoverSensor(int gpio)
+void HuskyDevice::RemoverSensor(int gpio)
 {
 	int tamanho = sensores.size();
 	for (int i = 0; i < tamanho; i++)
@@ -444,9 +431,9 @@ void HuskDevice::RemoverSensor(int gpio)
 	}
 }
 
-int HuskDevice::GetBtn() const { return BTN_PIN; }
-int HuskDevice::GetLed() const { return LED_PIN; }
-PubSubClient HuskDevice::GetMQTT() const { return MQTT; }
-int HuskDevice::GetOutput() const { return OUTPUT_PIN; }
-char HuskDevice::GetStatus() const { return SONOFF_STATUS; }
-std::string HuskDevice::GetID() const { return ID_CLIENTE; }
+int HuskyDevice::GetBtn() const { return BTN_PIN; }
+int HuskyDevice::GetLed() const { return LED_PIN; }
+PubSubClient HuskyDevice::GetMQTT() const { return MQTT; }
+int HuskyDevice::GetOutput() const { return OUTPUT_PIN; }
+char HuskyDevice::GetStatus() const { return SONOFF_STATUS; }
+std::string HuskyDevice::GetID() const { return ID_CLIENTE; }

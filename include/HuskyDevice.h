@@ -9,7 +9,7 @@
 #include "ReceptorIV.h"
 #include <ESP8266WiFi.h>
 #pragma once
-class HuskDevice
+class HuskyDevice
 {
 	protected:
 		husky::TipoUpload tipo;
@@ -54,7 +54,8 @@ class HuskDevice
 		char GetStatus() const;
 		std::string GetID() const;
 		PubSubClient GetMQTT() const;
-		explicit HuskDevice(husky::TipoUpload d);
+		explicit HuskyDevice
+	(husky::TipoUpload d);
 		void AdicionarSensor(std::unique_ptr<husky::Sensor>);
 		void RemoverSensor(int);
 };

@@ -17,4 +17,3 @@ husky::Sensor::Sensor(int gpio)
 	ultimoIntervalo = millis();
 	GPIO = gpio;
 }
- 

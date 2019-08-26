@@ -11,7 +11,7 @@ namespace husky
 	struct MensagemMqtt {
 		std::string topico;
 		std::string payload;
-		MensagemMqtt(std::string topico, std::string payload) : topico(topico), payload(payload)
+		MensagemMqtt(const std::string& topico, const std::string& payload) : topico(topico), payload(payload)
 		{
 		}
 	};

@@ -5,33 +5,33 @@
 #pragma once
 namespace patch
 {
-	template< class T, class... ARGS >
-	std::unique_ptr<T> make_unique(ARGS&&... my_args)
+	template<class T, class... ARGS>
+	std::unique_ptr<T> make_unique(ARGS&&... args)
 	{
-		return std::unique_ptr<T>(new T(std::forward<ARGS>(my_args)...));
+		return std::unique_ptr<T>(new T(std::forward<ARGS>(args)...));
 	}
 	
 
 	inline std::vector<std::string> split(std::string string, char c)
 	{
-		std::vector<std::string> retorno;
-		std::string novaString;
+		std::vector<std::string> returnVector;
+		std::string newString;
 
-		for (std::string::iterator it = string.begin(); it != string.end(); ++it)
+		for (auto it = string.begin(); it != string.end(); ++it)
 		{
 			if (*it == c)
 			{
-				retorno.emplace_back(novaString);
-				novaString.clear();
+				returnVector.emplace_back(newString);
+				newString.clear();
 			}
 			else
 			{
-				novaString += *it;
+				newString += *it;
 			}
 		}
 
-		retorno.emplace_back(novaString);
+		returnVector.emplace_back(newString);
 
-		return retorno;
+		return returnVector;
 	}
 }
