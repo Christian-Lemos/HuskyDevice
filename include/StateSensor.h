@@ -4,18 +4,18 @@
 #include <functional>
 #include <Sensor.h>
 
-typedef std::function<void(const std::vector<husky::MensagemMqtt>)> callback_signature;
+
 
 
 namespace husky
 {
 	#pragma once
-	class StateSensor: public Sensor
+	class StateSensor: public Sensor // equivalente ao extends 
 	{
 		protected:
 			virtual bool deveEnviar() = 0;//True para enviar os dados
 			virtual bool executar(){
-				this->lerSensor();
+				this->lerSensor(); 
 				return this->deveEnviar();
 			}
 		public:

@@ -8,14 +8,14 @@
 #include "HLW8012Sensor.h"
 #include "microondas.h"
 #include "patch.h"
-
+#include "statePir.h"
 SensorFactory::SensorFactory() {}
 
-std::unique_ptr<husky::Sensor> SensorFactory::CriarSensor(const std::string& valorSensor, int gpio)
+std::unique_ptr<husky::Sensor> SensorFactory::CriarSensor(const std::string& valorSensor, int gpio)  // cria um sensor
 {	
 	std::unique_ptr<husky::Sensor> sensor;
 
-	if (valorSensor == "pir")
+	if (valorSensor == "pir") // cria um sensor pir 
 	{
 		sensor = std::unique_ptr<husky::Sensor>(patch::make_unique<PIR>(gpio));
 	}
@@ -38,6 +38,10 @@ std::unique_ptr<husky::Sensor> SensorFactory::CriarSensor(const std::string& val
 	else if (valorSensor == "hlw8012")
 	{
 		sensor = std::unique_ptr<husky::Sensor>(patch::make_unique<HLW8012Sensor>(gpio));
+	}
+	else if(valorSensor == "statepir")
+	{
+		sensor = std::unique_ptr<husky::Sensor>(patch::make_unique<StatePIR>(gpio));
 	}
 	return sensor;
 }

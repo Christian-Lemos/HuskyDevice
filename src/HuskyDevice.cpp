@@ -94,6 +94,11 @@ void HuskyDevice::ImprimirTopicos() const
 		Serial.printf("Topico: %s\n", aux->nome);
 	}
 	Serial.printf("-------------------\n");*/
+
+	for (auto it = this->topicos.begin(); it !=  this->topicos.end(); ++it)
+	{
+		Serial.printf("%s\n", (*it).c_str()); // pega string e retorna um array de char 
+	}
 }
 
 void HuskyDevice::RemoverTopico(std::string topico)
@@ -202,15 +207,15 @@ void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 		}
 
 	}
-	else if (comando == "unsub")
+	else if (comando == "unsub") // sai do topico
 	{
 		RemoverTopico(chave);
 	}
-	else if (comando == "add_sensor")
+	else if (comando == "add_sensor") //add sensor
 	{
 		std::vector<std::string> sensorParams = patch::split(chave, '\r'); //sensor = [0] e gpio = [1];
 
-		std::unique_ptr<husky::Sensor> novoSensor = SensorFactory::CriarSensor(sensorParams.at(0), std::atoi(sensorParams.at(1).c_str()));
+		std::unique_ptr<husky::Sensor> novoSensor = SensorFactory::CriarSensor(sensorParams.at(0), std::atoi(sensorParams.at(1).c_str())); // recebe sensores de sensorFactory.cpp
 
 		AdicionarSensor(std::move(novoSensor));
 	}
@@ -218,7 +223,7 @@ void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 	{
 		RemoverSensor(std::atoi(chave.c_str()));
 	}
-	else if (comando == "sts")
+	else if (comando == "sts") // comando de status
 	{
 		SONOFF_STATUS = chave[0];
 	}
@@ -237,7 +242,7 @@ void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 }
 
 
-void HuskyDevice::CriarID()
+void HuskyDevice::CriarID() // usa MAC do microcontrolador 
 {
 	String idstr = WiFi.macAddress();
 	this->ID_CLIENTE = std::string(idstr.c_str());
