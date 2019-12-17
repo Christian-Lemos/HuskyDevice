@@ -5,7 +5,7 @@ class Microondas : public husky::Sensor
 	private:
 		husky::MensagemMqtt* mensagemMicroondas;
 	public:
-		virtual std::vector<husky::MensagemMqtt> executar();
+		virtual void lerSensor();
 		Microondas(int);
 };
 

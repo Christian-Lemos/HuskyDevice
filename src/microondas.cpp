@@ -1,14 +1,13 @@
 #include "microondas.h"
 
 
-std::vector<husky::MensagemMqtt> Microondas::executar()
+void Microondas::lerSensor()
 {
 	int valor = digitalRead(GPIO);
 	char valorSTR[2];
 	valorSTR[0] = '\0';
 	itoa(valor, valorSTR, 10);
 	mensagemMicroondas->payload.assign(valorSTR);
-	return retornoExecucao;
 }
 
 Microondas::Microondas(int gpio) : Sensor(gpio)

@@ -24,7 +24,6 @@ void husky::ReceptorIV::lerReceptor()
 	{
 		this->callback(this->resultadosReceptor);
 		this->receptor.resume();
-		
 	}
 }
 

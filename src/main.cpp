@@ -5,6 +5,7 @@
 #include "HuskyDevice.h"
 #include "patch.h"
 #include <memory>
+#include "EmissorIV.h"
 
 husky::TipoUpload tipo = husky::NODE_MCU;
 

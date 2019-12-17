@@ -7,7 +7,7 @@
 
 #define DHTTYPE DHT22
 
-std::vector<husky::MensagemMqtt> DHT22Sensor::executar()
+void DHT22Sensor::lerSensor()
 {	
 	float humidade = dht.readHumidity();
 	float temperatura = dht.readTemperature();
@@ -19,7 +19,6 @@ std::vector<husky::MensagemMqtt> DHT22Sensor::executar()
 	
 	this->mensagemHumidade->payload.assign(hSTR);
 	this->mensagemTemperatura->payload.assign(tSTR);
-	return retornoExecucao;
 }
 
 DHT22Sensor::DHT22Sensor(int gpio) : husky::Sensor(gpio)

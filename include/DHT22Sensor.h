@@ -8,6 +8,6 @@ class DHT22Sensor : public husky::Sensor
 		husky::MensagemMqtt* mensagemHumidade;
 		husky::MensagemMqtt* mensagemTemperatura;
 	public:
-		virtual std::vector<husky::MensagemMqtt> executar();
+		virtual void lerSensor();
 		DHT22Sensor(int);
 };

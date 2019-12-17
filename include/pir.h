@@ -6,7 +6,7 @@ class PIR : public husky::Sensor {
 		husky::MensagemMqtt* mensagemPIR;
 
 	public:
-		virtual std::vector<husky::MensagemMqtt> executar();
+		virtual void lerSensor();
 		PIR(int);
 };
 

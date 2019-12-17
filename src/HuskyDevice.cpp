@@ -177,7 +177,7 @@ void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 	std::string chave; // o comando é separado por /n
 
 	bool vezChave = false;
-	for (int i = 0; i < length; i++)
+	for (unsigned int i = 0; i < length; i++)
 	{
 		char c = (char)payload[i];
 		vezChave ? chave += c : comando += c;
@@ -340,7 +340,7 @@ void HuskyDevice::Conectar(const std::string ssid, const std::string senha, cons
 
 	static unsigned long ultimo = millis();
 	bool ligar = true;
-	int intervaloLed = 150;
+	unsigned int intervaloLed = 150;
 	while(!WiFi.isConnected())
 	{
 		if (tipo != husky::NODE_MCU) //Se n�o � node_mcu
@@ -390,6 +390,19 @@ void HuskyDevice::Loop()
 		for (auto itSensor = this->sensores.begin(); itSensor != this->sensores.end(); itSensor++) //auto = std::vector<std::unique_ptr<Sensor>>::iterator 
 		{
 			husky::Sensor* p = itSensor->get(); // verifica intervalo do sensor 
+
+			if(p->executar())
+			{
+				std::vector<husky::MensagemMqtt> mensagens = p->retornoExecucao;
+				std::string topicoBase(this->ID_CLIENTE);
+				for (auto itMensagem = mensagens.begin(); itMensagem != mensagens.end(); ++itMensagem)
+				{
+					std::string topico = topicoBase + "/" + itMensagem->topico;
+					MQTT.publish(topico.c_str(), itMensagem->payload.c_str());
+				}
+			}
+			/*
+
 			if ((millis() - p->ultimoIntervalo) > p->intervalo)
 			{
 				p->ultimoIntervalo = millis();
@@ -402,7 +415,7 @@ void HuskyDevice::Loop()
 					std::string topico = topicoBase + "/" + itMensagem->topico;
 					MQTT.publish(topico.c_str(), itMensagem->payload.c_str());
 				}
-			}
+			}*/
 		}
 		MQTT.loop();
 	}

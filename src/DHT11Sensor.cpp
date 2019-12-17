@@ -7,7 +7,7 @@
 
 #define DHTTYPE DHT11
 
-std::vector<husky::MensagemMqtt> DHT11Sensor::executar()
+void DHT11Sensor::lerSensor()
 {	
 	float humidade = dht.readHumidity();
 	float temperatura = dht.readTemperature();
@@ -19,7 +19,6 @@ std::vector<husky::MensagemMqtt> DHT11Sensor::executar()
 	
 	this->mensagemHumidade->payload.assign(hSTR);
 	this->mensagemTemperatura->payload.assign(tSTR);
-	return retornoExecucao;
 }
 
 DHT11Sensor::DHT11Sensor(int gpio) : husky::Sensor(gpio)

@@ -11,7 +11,7 @@ class HLW8012Sensor : public husky::Sensor {
 		husky::MensagemMqtt* mensagemCorrente;
 		husky::MensagemMqtt* mensagemPotencia;
 	public:
-		virtual std::vector<husky::MensagemMqtt> executar();
+		virtual void lerSensor();
 		void unblockingDelay(unsigned long);
 		void calibrate();
 		HLW8012Sensor(int);
