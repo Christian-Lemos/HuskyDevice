@@ -5,7 +5,7 @@ class DHT11Sensor : public husky::Sensor
 {
 	private:
 		DHT dht;
-		husky::MensagemMqtt* mensagemHumidade;
+		husky::MensagemMqtt* mensagemHumidade; //
 		husky::MensagemMqtt* mensagemTemperatura;
 	public:
 		virtual std::vector<husky::MensagemMqtt> executar();

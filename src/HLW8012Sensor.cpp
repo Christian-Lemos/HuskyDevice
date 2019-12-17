@@ -47,7 +47,7 @@ std::vector<husky::MensagemMqtt> HLW8012Sensor::executar()
 	int potencia = hlw8012.getActivePower();
 
 	char mensagemCorrente[50];
-	sprintf(mensagemCorrente, "%13.5f", corrente);
+	sprintf(mensagemCorrente, "%13.5f", corrente); // coloca double no vetor de caracters
 
 	char mensagemTensao[5];
 	itoa(tensao, mensagemTensao, 10);

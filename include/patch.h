@@ -5,12 +5,11 @@
 #pragma once
 namespace patch
 {
-	template<class T, class... ARGS>
+	template<class T, class... ARGS>  // NÃO MEXER RISCO DE MORTE 
 	std::unique_ptr<T> make_unique(ARGS&&... args)
 	{
 		return std::unique_ptr<T>(new T(std::forward<ARGS>(args)...));
 	}
-	
 
 	inline std::vector<std::string> split(std::string string, char c)
 	{

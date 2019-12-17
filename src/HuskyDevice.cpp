@@ -3,6 +3,7 @@
 #include "SensorFactory.h"
 #include "patch.h"
 #include "ReceptorIV.h"
+
 void HuskyDevice::LigarLed()
 {
 	if (tipo != husky::NODE_MCU)
@@ -109,7 +110,7 @@ void HuskyDevice::RemoverTopico(std::string topico)
 
 }
 
-void HuskyDevice::EnviarMensagemLigado()
+void HuskyDevice::EnviarMensagemLigado() // Informação se o relé encontra-se ligado
 {
 	std::string topico;
 	char mensagem[2];
@@ -123,19 +124,19 @@ void HuskyDevice::EnviarMensagemLigado()
 }
 
 
-void HuskyDevice::EnviarMensagemStatus()
+void HuskyDevice::EnviarMensagemStatus() // na primeira vez que liga é 0, nas posteriores é 1
 {
 	std::string topico;
 	std::string mensagem;
 	mensagem += this->SONOFF_STATUS;
 
-	topico.append(this->ID_CLIENTE);
+	topico.append(this->ID_CLIENTE); // endereco MAC
 	topico.append("/status");
 
 	MQTT.publish(topico.c_str(), mensagem.c_str());
 }
 
-void HuskyDevice::EnviarMensagemTipo()
+void HuskyDevice::EnviarMensagemTipo() //se é POW, basic ...
 {
 	std::string topico;
 	std::string mensagem;
@@ -170,10 +171,10 @@ void HuskyDevice::ReconnectWiFi() {
 	}
 }
 
-void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
+void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length) // é executado sempre que receber uma mensagem mqtt
 {
-	std::string comando;
-	std::string chave;
+	std::string comando; 
+	std::string chave; // o comando é separado por /n
 
 	bool vezChave = false;
 	for (int i = 0; i < length; i++)
@@ -187,7 +188,7 @@ void HuskyDevice::mqtt_callback(char* topic, byte* payload, unsigned int length)
 	}
 	//Serial.printf("Comando: %s\nChave: %s\n", comando.c_str(), chave.c_str());
 
-	if (comando == "tp")
+	if (comando == "tp") //toggle power
 	{
 		chave == "1" ? LigarSonoff() : DesligarSonoff();
 	}
@@ -242,7 +243,7 @@ void HuskyDevice::CriarID()
 	this->ID_CLIENTE = std::string(idstr.c_str());
 }
 
-HuskyDevice::HuskyDevice(husky::TipoUpload stipo)
+HuskyDevice::HuskyDevice(husky::TipoUpload stipo) // construtor do husky device
 {
 	switch (stipo)
 	{
@@ -271,7 +272,7 @@ HuskyDevice::HuskyDevice(husky::TipoUpload stipo)
 	Iniciar();
 }
 
-void HuskyDevice::Iniciar()
+void HuskyDevice::Iniciar() // extensão construtor
 {
 	if (tipo != husky::NODE_MCU)
 	{
@@ -283,12 +284,12 @@ void HuskyDevice::Iniciar()
 	CriarID();
 	SONOFF_STATUS = '0';
 	MQTT = PubSubClient(espClient);
-	this->receptorIV = std::unique_ptr<husky::ReceptorIV>(patch::make_unique<husky::ReceptorIV>(4));
+	this->receptorIV = std::unique_ptr<husky::ReceptorIV>(patch::make_unique<husky::ReceptorIV>(4)); // receptor infravermelho
 	this->receptorIV.get()->setCallback([this](decode_results resultados) {
 
 		std::string stringBuffer;
 
-		stringBuffer.reserve(resultados.rawlen);
+		stringBuffer.reserve(resultados.rawlen); // resultado do sinal em batcode
 
 		for (int i = 0; i < resultados.rawlen; i++) {
 			char buffer[10];
@@ -309,7 +310,7 @@ void HuskyDevice::Iniciar()
 
 }
 
-void HuskyDevice::VerificarBtn()
+void HuskyDevice::VerificarBtn() //botao sonoff 
 {
 	int btn_estado_atual = digitalRead(BTN_PIN);
 
@@ -371,7 +372,7 @@ void HuskyDevice::Conectar(const std::string ssid, const std::string senha, cons
 
 	// DesligarLed();
 	MQTT.setServer(servidor.c_str(), porta); //Endere�o de ip e porta do broker MQTT
-	MQTT.setCallback(std::bind(&HuskyDevice::mqtt_callback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	MQTT.setCallback(std::bind(&HuskyDevice::mqtt_callback, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)); // ação precisa de 3 placeholder por causa da assinatura do callback
 }
 
 void HuskyDevice::Loop()
@@ -386,9 +387,9 @@ void HuskyDevice::Loop()
 	}
 	else
 	{
-		for (auto itSensor = this->sensores.begin(); itSensor != this->sensores.end(); itSensor++)
+		for (auto itSensor = this->sensores.begin(); itSensor != this->sensores.end(); itSensor++) //auto = std::vector<std::unique_ptr<Sensor>>::iterator 
 		{
-			husky::Sensor* p = itSensor->get();
+			husky::Sensor* p = itSensor->get(); // verifica intervalo do sensor 
 			if ((millis() - p->ultimoIntervalo) > p->intervalo)
 			{
 				p->ultimoIntervalo = millis();
@@ -408,9 +409,9 @@ void HuskyDevice::Loop()
 	this->receptorIV.get()->lerReceptor();
 }
 
-void HuskyDevice::AdicionarSensor(std::unique_ptr<husky::Sensor> s)
+void HuskyDevice::AdicionarSensor(std::unique_ptr<husky::Sensor> s) //adicionar 
 {
-	sensores.push_back(std::move(s));
+	sensores.push_back(std::move(s)); // empurra para o vetor
 }
 
 void HuskyDevice::RemoverSensor(int gpio)

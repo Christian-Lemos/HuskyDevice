@@ -9,13 +9,14 @@ namespace husky
 	class Sensor
 	{
 		protected:
-			int GPIO;
-			std::vector<husky::MensagemMqtt> retornoExecucao;
+			std::string nome;
+			int GPIO; // pino do sensor
+			std::vector<husky::MensagemMqtt> retornoExecucao; // 
 		public:
 			virtual std::vector<husky::MensagemMqtt> executar() = 0;
 			int intervalo; //Intervalo de envio de dados para o ucmr
 			unsigned long ultimoIntervalo = 10000;
-			int getGPIO() const;
+			int getGPIO() const; // nao deixa alterar qualquer atributo da classe 
 			void setGPIO(int);
 			explicit Sensor(int);
 	};
