@@ -8,6 +8,7 @@
 #include "PubSubClient.h"
 #include "ReceptorIV.h"
 #include <ESP8266WiFi.h>
+#include "EmissorIV.h"
 #pragma once
 class HuskyDevice
 {
@@ -37,6 +38,7 @@ class HuskyDevice
 		void VerificarBtn();
 		std::vector<std::unique_ptr<husky::Sensor>> sensores;
 		std::unique_ptr<husky::ReceptorIV> receptorIV;
+		
 	public:
 		void InscreverTodosTopicos();
 		void AdicionarTopico(std::string);
@@ -54,9 +56,17 @@ class HuskyDevice
 		char GetStatus() const;
 		std::string GetID() const;
 		PubSubClient GetMQTT() const;
-		explicit HuskyDevice
-	(husky::TipoUpload d);
+		explicit HuskyDevice(husky::TipoUpload d);
 		void AdicionarSensor(std::unique_ptr<husky::Sensor>);
 		void RemoverSensor(int);
+		~HuskyDevice()
+		{
+			if(this->emissorIV != nullptr)
+			{
+				delete this->emissorIV;
+			}
+		}
+		husky::EmissorIV* emissorIV;
+
 };
 

@@ -7,6 +7,7 @@
 #include <memory>
 #include "EmissorIV.h"
 
+
 husky::TipoUpload tipo = husky::NODE_MCU;
 
 HuskyDevice dispositivo(tipo);
@@ -24,13 +25,19 @@ void setup()
 		dispositivo.AdicionarSensor(std::move(shlw));
 	}
 
-	dispositivo.AdicionarSensor(SensorFactory::CriarSensor("statepir", 3));
+	if(tipo == husky::NODE_MCU)
+	{
+		dispositivo.AdicionarSensor(SensorFactory::CriarSensor("statepir", 3)); // sensor factory parametro string e um gpio
+		dispositivo.AdicionarSensor(SensorFactory::CriarSensor("dht22", 5));
 
-	Serial.printf("deu bom");
+		dispositivo.emissorIV = new husky::EmissorIV(1, 13, 14, 1); //EmissorIV(modelo, gpio, protocolo, i modo)
+	}
+	
+
+	
 }
 
 void loop()
 {
 	dispositivo.Loop();
-
 }
