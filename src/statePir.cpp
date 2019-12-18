@@ -11,7 +11,7 @@ StatePIR::StatePIR(int gpio):husky::StateSensor(gpio)
 {
 	this->retornoExecucao.reserve(1);
 
-	this->retornoExecucao.emplace_back("pir", "");
+	this->retornoExecucao.emplace_back("statePir", ""); //manda para o topico statepir 
 
 	this->mensagemPIR = &this->retornoExecucao.at(0);
 

@@ -34,6 +34,13 @@ void setup()
 	}
 	
 
+	// remover sensor 
+	//dispositivo.RemoverSensor(1);
+
+
+	//add topico
+	//dispositivo.AdicionarTopico("casa/garagem");
+
 	
 }
 

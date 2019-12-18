@@ -453,6 +453,6 @@ void HuskyDevice::RemoverSensor(int gpio)
 int HuskyDevice::GetBtn() const { return BTN_PIN; }
 int HuskyDevice::GetLed() const { return LED_PIN; }
 PubSubClient HuskyDevice::GetMQTT() const { return MQTT; }
-int HuskyDevice::GetOutput() const { return OUTPUT_PIN; }
-char HuskyDevice::GetStatus() const { return SONOFF_STATUS; }
+int HuskyDevice::GetOutput() const { return OUTPUT_PIN; }  
+char HuskyDevice::GetStatus() const { return SONOFF_STATUS; } //status 0 ou 1
 std::string HuskyDevice::GetID() const { return ID_CLIENTE; }
