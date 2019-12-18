@@ -19,7 +19,7 @@ StatePIR::StatePIR(int gpio):husky::StateSensor(gpio)
 	pinMode(gpio, INPUT);
 }
 
-bool StatePIR::DeveEnviar()
+bool StatePIR::deveEnviar()
 {
 	return this->mensagemPIR->payload == "1";
 }

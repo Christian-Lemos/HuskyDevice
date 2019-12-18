@@ -7,9 +7,9 @@ class StatePIR : public husky::StateSensor {
 	private:
 		husky::MensagemMqtt* mensagemPIR;
 	protected:
-		virtual bool DeveEnviar();
-	public:
+		virtual bool deveEnviar();
 		virtual void lerSensor();
+	public:
 		StatePIR(int);
 };
 

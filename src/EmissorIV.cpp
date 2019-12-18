@@ -1,4 +1,4 @@
-#include "EmissorIV.h";
+#include "EmissorIV.h"
 
 husky::EmissorIV::EmissorIV(unsigned int modelo, unsigned int gpio, decode_type_t protocolo, stdAc::opmode_t modo): m_gpio(gpio), ac(gpio)
 {

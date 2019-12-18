@@ -9,10 +9,8 @@ namespace husky
 	class Sensor
 	{
 		protected:
-			std::string nome;
 			int GPIO; // pino do sensor
-			 // 
-			void virtual lerSensor() = 0;
+			virtual void lerSensor() = 0;
 		public:
 			std::vector<husky::MensagemMqtt> retornoExecucao;
 			virtual bool executar() //Se true então pode enviar os dados

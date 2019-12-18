@@ -23,9 +23,14 @@ void setup()
 		std::unique_ptr<husky::Sensor> shlw = SensorFactory::CriarSensor("hlw8012", 5); //O 5 n�o importa. 
 		dispositivo.AdicionarSensor(std::move(shlw));
 	}
+
+	dispositivo.AdicionarSensor(SensorFactory::CriarSensor("statepir", 3));
+
+	Serial.printf("deu bom");
 }
 
 void loop()
 {
 	dispositivo.Loop();
+
 }
